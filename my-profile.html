@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Profile</title>
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background-color: #000;
+      color: #0ff;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: #0ff;
+    }
+    button {
+      background: #111;
+      color: #0ff;
+      border: 2px solid #0ff;
+      padding: 12px 20px;
+      margin: 10px;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #0ff;
+      color: black;
+    }
+    .result-box {
+      margin-top: 30px;
+      font-size: 18px;
+      color: #fff;
+    }
+    input {
+      padding: 10px;
+      border: 1px solid #0ff;
+      background: #000;
+      color: #fff;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>My Profile</h1>
+
+  <button onclick="showUsername()">Username</button>
+  <button onclick="showEmail()">Gmail</button>
+  <button onclick="changePassword()">Change Password</button>
+  <button onclick="changeProfile()">Change Profile</button>
+
+  <div class="result-box" id="result"></div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { 
+      getAuth, 
+      onAuthStateChanged, 
+      updateProfile,
+      updatePassword,
+      EmailAuthProvider,
+      reauthenticateWithCredential
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBasuAzvAlaVAayEdDU9bB9wvUzG7fVuAg",
+      authDomain: "islamic-quiz-website.firebaseapp.com",
+      databaseURL: "https://islamic-quiz-website-default-rtdb.firebaseio.com",
+      projectId: "islamic-quiz-website",
+      storageBucket: "islamic-quiz-website.appspot.com",
+      messagingSenderId: "517259698394",
+      appId: "1:517259698394:web:36094d8d03187da81685e3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+
+    const resultDiv = document.getElementById("result");
+
+    function showUsername() {
+      onAuthStateChanged(auth, user => {
+        if (user) {
+          resultDiv.innerText = "Your Username: " + (user.displayName || "Not Set");
+        } else {
+          resultDiv.innerText = "User not logged in.";
+        }
+      });
+    }
+
+    function showEmail() {
+      onAuthStateChanged(auth, user => {
+        if (user) {
+          resultDiv.innerText = "Your Gmail: " + user.email;
+        } else {
+          resultDiv.innerText = "User not logged in.";
+        }
+      });
+    }
+
+    function changePassword() {
+      const newPassword = prompt("Enter new password (min 6 characters):");
+      if (!newPassword || newPassword.length < 6) {
+        alert("Password too short or empty.");
+        return;
+      }
+
+      onAuthStateChanged(auth, user => {
+        if (user) {
+          updatePassword(user, newPassword)
+            .then(() => {
+              resultDiv.innerText = "Password updated successfully.";
+            })
+            .catch(error => {
+              resultDiv.innerText = "Error: " + error.message;
+            });
+        } else {
+          resultDiv.innerText = "User not logged in.";
+        }
+      });
+    }
+
+    function changeProfile() {
+      const newUsername = prompt("Enter new username:");
+      if (!newUsername) {
+        alert("Username cannot be empty.");
+        return;
+      }
+
+      onAuthStateChanged(auth, user => {
+        if (user) {
+          updateProfile(user, { displayName: newUsername })
+            .then(() => {
+              resultDiv.innerText = "Username updated to: " + newUsername;
+            })
+            .catch(error => {
+              resultDiv.innerText = "Error: " + error.message;
+            });
+        } else {
+          resultDiv.innerText = "User not logged in.";
+        }
+      });
+    }
+  </script>
+</body>
+</html>￼Enter
