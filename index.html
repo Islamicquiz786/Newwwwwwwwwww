@@ -1,99 +1,292 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+ <head>
   <meta charset="UTF-8">
-  <title>Dashboard - Islamic Quiz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Neon Blue</title>
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: #0a0a0a;
-      color: white;
-      display: flex;
-    }
-
-    /* Sidebar */
-    .sidebar {
-      width: 250px;
-      background: #111;
+      background: url('https://github.com/Islamicquiz786/Sahil-Images-/raw/main/ee915497-0de4-46d0-9df9-2998dd7b1790.jpeg') no-repeat center center fixed;
+      background-size: cover;
       height: 100vh;
-      position: fixed;
-      overflow-y: auto;
-      box-shadow: 2px 0 10px rgba(0,0,0,0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    .sidebar h2 {
+    .container {
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+    }
+
+    .card {
+      width: 330px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 30px 24px;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 25px #00f7ff;
+      border: 1px solid #00f7ff33;
+      color: #00f7ff;
+      position: relative;
       text-align: center;
-      padding: 20px;
-      border-bottom: 1px solid #333;
-      background: #222;
     }
 
-    .sidebar a {
-      display: block;
-      padding: 15px 20px;
-      text-decoration: none;
-      color: white;
-      border-bottom: 1px solid #333;
+    .card::before {
+      content: "";
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      width: calc(100% + 6px);
+      height: calc(100% + 6px);
+      background: linear-gradient(135deg, #00f7ff, #000, #00f7ff);
+      border-radius: 14px;
+      z-index: -1;
+      filter: blur(10px);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
+    h2 {
+      margin-bottom: 18px;
+      font-size: 22px;
+      text-shadow: 0 0 10px #00f7ff;
+    }
+
+    .input-box {
+      position: relative;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
+    .input-box input {
+      width: 100%;
+      padding: 10px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid #00f7ff;
+      color: #00f7ff;
+      font-size: 14px;
+      outline: none;
       transition: 0.3s;
     }
 
-    .sidebar a:hover {
-      background: #444;
+    .input-box input:focus {
+      box-shadow: 0 0 8px #00f7ff;
     }
 
-    /* Main content */
-    .main-content {
-      margin-left: 250px;
-      padding: 20px;
-      width: calc(100% - 250px);
+    .input-box label {
+      position: absolute;
+      top: -18px;
+      left: 0;
+      font-size: 12px;
+      color: #00f7ff;
+      text-shadow: 0 0 5px #00f7ff;
+    }
+
+    .options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: #00f7ff;
+      margin-bottom: 12px;
+    }
+
+    .options input[type="checkbox"] {
+      accent-color: #00f7ff;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 10px;
+      background: #00f7ff;
+      border: none;
+      border-radius: 30px;
+      font-size: 15px;
+      font-weight: bold;
+      color: #000;
+      box-shadow: 0 0 15px #00f7ff;
+      cursor: pointer;
+      transition: 0.25s ease-in-out;
+    }
+
+    .btn:hover {
+      box-shadow: 0 0 25px #00f7ff;
+      transform: scale(1.02);
+    }
+
+    .small {
+      font-size: 12px;
+      margin-top: 8px;
+      color: #00f7ff;
+    }
+
+    .error {
+      color: #ff8080;
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    .success {
+      color: #b7ffb7;
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    .muted-link {
+      color: #00f7ff;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    input[maxlength] { ime-mode: disabled; }
+
+    @media (max-width: 760px) {
+      .container { flex-direction: column; gap: 18px; }
     }
   </style>
-</head>
-<body>
+ </head>
+ <body>
+  <div class="container">
+    <!-- LOGIN CARD -->
+    <div class="card" id="loginCard">
+      <h2>Login</h2>
+      <div class="input-box">
+        <label for="login-username">Username</label>
+        <input type="text" id="login-username" placeholder="Enter username" maxlength="8" autocomplete="username">
+      </div>
+      <div class="input-box">
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" placeholder="Enter password" autocomplete="current-password">
+      </div>
+      <div class="options">
+        <label><input type="checkbox" id="remember"> Remember me</label>
+        <a class="muted-link" id="showRegister">Register</a>
+      </div>
+      <button class="btn" id="loginBtn">Login</button>
+      <div id="loginMsg" class="error" style="display:none;"></div>
 
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <h2>📋 Menu</h2>
-    <a href="#" onclick="loadPage('my-profile.html')">My Profile</a>
-    <a href="#" onclick="loadPage('balance.html')">Balance</a>
-    <a href="#" onclick="loadPage('withdraw.html')">Withdraw</a>
-    <a href="#" onclick="loadPage('invite-friend.html')">Invite Friend</a>
-    <a href="#" onclick="loadPage('withdraw-request.html')">Withdraw Request</a>
-    <a href="#" onclick="loadPage('earning-record.html')">Total Earning Record</a>
-    <a href="#" onclick="loadPage('admin-notification.html')">Admin Notification</a>
-    <a href="#" onclick="loadPage('daily-quiz.html')">Daily Quiz</a>
-    <a href="#" onclick="loadPage('quran-hadith.html')">Quran & Hadith</a>
-    <a href="#" onclick="loadPage('namaz-time.html')">Namaz Time</a>
-    <a href="#" onclick="loadPage('namaz.html')">Namaz</a>
-    <a href="#" onclick="logoutUser()">Log Out</a>
+      <div class="small" style="margin-top:12px;">
+        Default admin login: <strong>Pakistan</strong> / <strong>Pakistan123</strong>
+      </div>
+    </div>
+
+    <!-- REGISTER CARD -->
+    <div class="card" id="registerCard">
+      <h2>Register</h2>
+      <div class="input-box">
+        <label for="reg-username">Username (max 8 chars)</label>
+        <input type="text" id="reg-username" placeholder="Username" maxlength="8" autocomplete="username">
+      </div>
+      <div class="input-box">
+        <label for="reg-name">Full name</label>
+        <input type="text" id="reg-name" placeholder="Your name" autocomplete="name">
+      </div>
+      <div class="input-box">
+        <label for="reg-password">Password (1–8 chars)</label>
+        <input type="password" id="reg-password" placeholder="Password" autocomplete="new-password">
+      </div>
+      <div class="input-box">
+        <label for="reg-mobile">Mobile (starts with 03, 11 digits)</label>
+        <input type="tel" id="reg-mobile" placeholder="03XXXXXXXXX" maxlength="11" autocomplete="tel">
+      </div>
+      <button class="btn" id="regBtn">Register</button>
+      <div id="regMsg" class="error" style="display:none;"></div>
+      <div class="small" style="margin-top:10px;">
+        After successful register, you can login using the same username & password.
+      </div>
+    </div>
   </div>
 
-  <!-- Main content area -->
-  <div class="main-content" id="main-content">
-    <h1>Welcome to Your Dashboard</h1>
-    <p>Select any feature from the left menu.</p>
-  </div>
-
-  <!-- Script to load HTML dynamically -->
   <script>
-    function loadPage(pageUrl) {
-      fetch(pageUrl)
-        .then(response => response.text())
-        .then(html => {
-          document.getElementById('main-content').innerHTML = html;
-        })
-        .catch(error => {
-          document.getElementById('main-content').innerHTML = "<p>Error loading page.</p>";
-        });
+    const ADMIN = { username: 'Pakistan', password: 'Pakistan123', name: 'Admin' };
+    const $ = id => document.getElementById(id);
+
+    $('reg-mobile').addEventListener('input', e => {
+      e.target.value = e.target.value.replace(/[^0-9]/g,'').slice(0,11);
+    });
+
+    $('regBtn').addEventListener('click', () => {
+      const username = $('reg-username').value.trim();
+      const name = $('reg-name').value.trim();
+      const password = $('reg-password').value;
+      const mobile = $('reg-mobile').value.trim();
+      const msgEl = $('regMsg');
+      msgEl.style.display = 'none';
+      msgEl.className = 'error';
+
+      if (!username) return showRegErr('Username required');
+      if (username.length > 8) return showRegErr('Max 8 chars username');
+      if (!name) return showRegErr('Name required');
+      if (password.length < 1 || password.length > 8) return showRegErr('Password length 1–8 only');
+      if (!mobile) return showRegErr('Mobile required');
+      if (!/^03\d{9}$/.test(mobile)) return showRegErr('Must start with 03 & be 11 digits');
+
+      const users = getUsers();
+      if (users[username]) return showRegErr('Username already taken');
+
+      users[username] = { username, name, password, mobile };
+      localStorage.setItem('users', JSON.stringify(users));
+
+      msgEl.style.display = 'block';
+      msgEl.className = 'success';
+      msgEl.textContent = 'Registration successful — now login.';
+      $('reg-username').value = '';
+      $('reg-name').value = '';
+      $('reg-password').value = '';
+      $('reg-mobile').value = '';
+    });
+
+    function showRegErr(text) {
+      const msgEl = $('regMsg');
+      msgEl.style.display = 'block';
+      msgEl.className = 'error';
+      msgEl.textContent = text;
+    }
+    function getUsers() {
+      try {
+        return JSON.parse(localStorage.getItem('users')) || {};
+      } catch { return {}; }
     }
 
-    function logoutUser() {
-      alert("You have been logged out!");
-      // Add Firebase signOut() if using authentication
-      // location.href = "index.html";
+    $('loginBtn').addEventListener('click', () => {
+      const username = $('login-username').value.trim();
+      const password = $('login-password').value;
+      const msgEl = $('loginMsg');
+      msgEl.style.display = 'none';
+
+      if (!username) return showLoginErr('Username required');
+      if (!password) return showLoginErr('Password required');
+
+      const users = getUsers();
+      if (users[username] && users[username].password === password) {
+        loginSuccess(users[username]); return;
+      }
+      if (username === ADMIN.username && password === ADMIN.password) {
+        loginSuccess(ADMIN); return;
+      }
+      showLoginErr('Invalid username or password');
+    });
+
+    function showLoginErr(text) {
+      const msgEl = $('loginMsg');
+      msgEl.style.display = 'block';
+      msgEl.className = 'error';
+      msgEl.textContent = text;
+    }
+
+    function loginSuccess(user) {
+      window.location.href = "https://cms.punjabpolice.gov.pk/complaint-listings";
     }
   </script>
-
-</body>
-</html>
+ </body>
+  </html>
